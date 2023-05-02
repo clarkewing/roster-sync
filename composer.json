@@ -16,9 +16,9 @@
         }
     ],
     "require": {
-        "php": "^8.0",
-        "laravel-zero/framework": "^9.2",
-        "nunomaduro/laravel-console-dusk": "^1.10",
+        "php": "^8.2",
+        "laravel-zero/framework": "^10.0",
+        "nunomaduro/laravel-console-dusk": "^1.11",
         "nunomaduro/termwind": "^1.14"
     },
     "require-dev": {

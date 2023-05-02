@@ -43,7 +43,7 @@ class UploadRosterCommand extends Command
 
                 return self::SUCCESS;
             });
-        } catch (Exception $e) {
+        } catch (Exception) {
             return self::FAILURE;
         }
 

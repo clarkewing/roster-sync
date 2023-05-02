@@ -37,7 +37,7 @@ class RetrieveIcsRosterCommand extends Command
                     }, 'Waited %d seconds for FlightProgram.ics.');
 
             });
-        } catch (Exception $e) {
+        } catch (Exception) {
             return self::FAILURE;
         }
 
