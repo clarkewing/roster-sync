@@ -28,11 +28,11 @@ class RetrieveIcsRosterCommand extends Command
                     ->waitForText('Security Question')
                     ->type('answer', config('app.credentials.apm.answer'))
                     ->press('Verify')
-                    ->waitForText('Last connection date');
+                    ->waitForText('Last connection date', 15);
 
                 // Trigger ICS download.
                 $browser->visit('https://planning.to.aero/FlightProgram/GetICS')
-                    ->waitUsing(10, 1, function () {
+                    ->waitUsing(30, 1, function () {
                         return File::exists('storage/laravel-console-dusk/downloads/FlightProgram.ics');
                     }, 'Waited %d seconds for FlightProgram.ics.');
 
