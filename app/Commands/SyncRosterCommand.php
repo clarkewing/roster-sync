@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use Illuminate\Support\Facades\Log;
 use LaravelZero\Framework\Commands\Command;
 use Illuminate\Console\Scheduling\Schedule;
 
@@ -18,15 +19,27 @@ class SyncRosterCommand extends Command
 
     public function handle(): int
     {
-        $this->task("Retrieving roster from APM", function () {
+        $failures = 0;
+
+        $failures += ! $this->task("Retrieving roster from APM", function () {
             return ! $this->callSilently(RetrieveIcsRosterCommand::class);
         });
 
-        $this->task("Uploading roster to TOsync", function () {
+        $failures += ! $this->task("Uploading roster to TOsync", function () {
             return ! $this->callSilently(UploadRosterCommand::class);
         });
 
+        if ($failures) {
+            $this->error('Sync failed.');
+
+            Log::warning('Sync failed.');
+
+            return self::FAILURE;
+        }
+
         $this->info('Done!');
+
+        Log::info('Sync successful.');
 
         return self::SUCCESS;
     }

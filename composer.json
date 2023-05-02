@@ -17,6 +17,7 @@
     ],
     "require": {
         "php": "^8.2",
+        "illuminate/log": "^10.0",
         "laravel-zero/framework": "^10.0",
         "nunomaduro/laravel-console-dusk": "^1.11",
         "nunomaduro/termwind": "^1.14"
