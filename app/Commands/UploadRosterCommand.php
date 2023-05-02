@@ -3,7 +3,7 @@
 namespace App\Commands;
 
 use Exception;
-use Illuminate\Console\Command;
+use LaravelZero\Framework\Commands\Command;
 use Illuminate\Support\Str;
 
 class UploadRosterCommand extends Command

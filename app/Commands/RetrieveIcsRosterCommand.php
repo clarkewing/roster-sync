@@ -3,7 +3,7 @@
 namespace App\Commands;
 
 use Exception;
-use Illuminate\Console\Command;
+use LaravelZero\Framework\Commands\Command;
 use Illuminate\Support\Facades\File;
 
 class RetrieveIcsRosterCommand extends Command

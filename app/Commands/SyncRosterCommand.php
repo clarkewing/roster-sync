@@ -2,7 +2,7 @@
 
 namespace App\Commands;
 
-use Illuminate\Console\Command;
+use LaravelZero\Framework\Commands\Command;
 use Illuminate\Console\Scheduling\Schedule;
 
 class SyncRosterCommand extends Command
