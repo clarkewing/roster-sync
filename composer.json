@@ -18,6 +18,7 @@
     "require": {
         "php": "^8.0",
         "laravel-zero/framework": "^9.2",
+        "nunomaduro/laravel-console-dusk": "^1.10",
         "nunomaduro/termwind": "^1.14"
     },
     "require-dev": {
@@ -47,5 +48,12 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "bin": ["roster-sync"]
+    "bin": ["roster-sync"],
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+                "nunomaduro/laravel-console-dusk"
+            ]
+        }
+    }
 }

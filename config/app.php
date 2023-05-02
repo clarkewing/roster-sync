@@ -57,6 +57,28 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | RosterSync Credentials
+    |--------------------------------------------------------------------------
+    |
+    | This object stores the credentials used to connect to APM and TOsync.
+    |
+    */
+
+    'credentials' => [
+        'apm' => [
+            'username' => env('APM_USERNAME'),
+            'password' => env('APM_PASSWORD'),
+            'answer'   => env('APM_ANSWER'),
+        ],
+
+        'tosync' => [
+            'username' => env('TOSYNC_USERNAME'),
+            'password' => env('TOSYNC_PASSWORD'),
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------
     |
@@ -68,6 +90,7 @@ return [
 
     'providers' => [
         App\Providers\AppServiceProvider::class,
+        App\Providers\DuskServiceProvider::class,
     ],
 
 ];
