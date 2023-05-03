@@ -22,7 +22,7 @@ class UploadRosterCommand extends Command
                     ->type('email', config('app.credentials.tosync.username'))
                     ->type('user-password', config('app.credentials.tosync.password'))
                     ->press('Connexion')
-                    ->waitFor('#calendar-container', 10);
+                    ->waitFor('#calendar-container', 15);
 
                 if ($browser->pause(1000)->element('#driver-popover-item')) {
                     $browser->whenAvailable('#driver-popover-item', function ($popover) {
