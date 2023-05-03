@@ -24,16 +24,22 @@ class UploadRosterCommand extends Command
                     ->press('Connexion')
                     ->waitFor('#calendar-container', 15);
 
+                // Close tutorial popover if it opens.
                 if ($browser->pause(1000)->element('#driver-popover-item')) {
                     $browser->whenAvailable('#driver-popover-item', function ($popover) {
                         $popover->press('Fermer');
                     });
                 }
 
+                // Open toolbar if it isn't open yet.
+                if (! $browser->element('#toolbar')) {
+                    $browser->waitFor('#statusButton')
+                        ->press('#statusButton')
+                        ->waitFor('#toolbar');
+                }
+
                 // Upload new roster.
-                $browser->waitFor('#statusButton')
-                    ->press('#statusButton')
-                    ->waitForText('Importer un fichier ics')
+                $browser->waitForText('Importer un fichier ics')
                     ->attach('#filereader', 'storage/laravel-console-dusk/downloads/FlightProgram.ics')
                     ->waitUsing(60, 1, function () use ($browser) {
                         $consoleLog = $browser->getOriginalBrowser()->driver->manage()->getLog('browser');
