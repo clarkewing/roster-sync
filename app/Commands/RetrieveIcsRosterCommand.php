@@ -21,11 +21,14 @@ class RetrieveIcsRosterCommand extends Command
             $this->browse(function ($browser) {
                 // Connect to APM.
                 $browser->visit('https://planning.to.aero/SAML/SingleSignOn')
-                    ->waitFor('#okta-signin-username')
-                    ->type('#okta-signin-username', config('app.credentials.apm.username'))
-                    ->type('#okta-signin-password', config('app.credentials.apm.password'))
+                    ->waitFor('input[name="username"]')
+                    ->type('username', config('app.credentials.apm.username'))
                     ->press('#okta-signin-submit')
-                    ->waitForText('Security Question')
+                    ->waitFor('input[name="password"]')->pause(100)
+                    ->type('password', config('app.credentials.apm.password'))
+                    ->press('Verify');
+
+                $browser->waitFor('input[name="answer"]')->pause(100)
                     ->type('answer', config('app.credentials.apm.answer'))
                     ->press('Verify')
                     ->waitForText('Last connection date', 15);
