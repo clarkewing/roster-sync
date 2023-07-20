@@ -3,6 +3,7 @@
 namespace App\Commands;
 
 use Exception;
+use Illuminate\Support\Facades\Log;
 use LaravelZero\Framework\Commands\Command;
 use Illuminate\Support\Facades\File;
 
@@ -28,6 +29,11 @@ class RetrieveIcsRosterCommand extends Command
                     ->type('password', config('app.credentials.apm.password'))
                     ->press('Verify');
 
+                if ($errorElement = $browser->pause(1000)->element('.okta-form-infobox-error')) {
+                    Log::error($errorElement->getText());
+                    return self::FAILURE;
+                }
+
                 $browser->waitFor('input[name="answer"]')->pause(100)
                     ->type('answer', config('app.credentials.apm.answer'))
                     ->press('Verify')
@@ -40,7 +46,8 @@ class RetrieveIcsRosterCommand extends Command
                     }, 'Waited %d seconds for FlightProgram.ics.');
 
             });
-        } catch (Exception) {
+        } catch (Exception $exception) {
+            Log::error($exception->getMessage());
             return self::FAILURE;
         }
 

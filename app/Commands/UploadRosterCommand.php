@@ -3,6 +3,7 @@
 namespace App\Commands;
 
 use Exception;
+use Illuminate\Support\Facades\Log;
 use LaravelZero\Framework\Commands\Command;
 use Illuminate\Support\Str;
 
@@ -21,8 +22,14 @@ class UploadRosterCommand extends Command
                     ->waitForText('Connexion avec identifiants TO.sync')
                     ->type('email', config('app.credentials.tosync.username'))
                     ->type('user-password', config('app.credentials.tosync.password'))
-                    ->press('Connexion')
-                    ->waitFor('#calendar-container', 15);
+                    ->press('Connexion');
+
+                if ($errorElement = $browser->pause(1000)->element('.noty_type__error')) {
+                    Log::error($errorElement->getText());
+                    return self::FAILURE;
+                }
+
+                $browser->waitFor('#calendar-container', 15);
 
                 // Close tutorial popover if it opens.
                 if ($browser->pause(1000)->element('#driver-popover-item')) {
