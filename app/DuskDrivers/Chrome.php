@@ -12,11 +12,12 @@ class Chrome extends ConsoleDuskChrome
     // Overwrite Driver creation to log ALL console message levels.
     public function getDriver()
     {
-        $options = (new ChromeOptions())
-            ->addArguments(array_filter([
+        $options = (new ChromeOptions())->addArguments(
+            array_filter([
                 '--disable-gpu',
                 $this->runHeadless(),
-            ]));
+            ])
+        );
 
         $driver = RemoteWebDriver::create(
             'http://localhost:9515',

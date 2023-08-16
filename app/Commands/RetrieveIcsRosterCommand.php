@@ -22,20 +22,23 @@ class RetrieveIcsRosterCommand extends Command
             $this->browse(function ($browser) {
                 // Connect to APM.
                 $browser->visit('https://planning.to.aero/SAML/SingleSignOn')
-                    ->waitFor('input[name="username"]')
-                    ->type('username', config('app.credentials.apm.username'))
-                    ->press('#okta-signin-submit')
-                    ->waitFor('input[name="password"]')->pause(100)
-                    ->type('password', config('app.credentials.apm.password'))
-                    ->press('Verify');
+                    ->waitFor('input[name="identifier"]')
+                    ->type('identifier', config('app.credentials.apm.username'))
+                    ->waitFor('input[name="credentials.passcode"]')->pause(100)
+                    ->type('credentials.passcode', config('app.credentials.apm.password'))
+                    ->press('Sign in');
 
                 if ($errorElement = $browser->pause(1000)->element('.okta-form-infobox-error')) {
                     Log::error($errorElement->getText());
                     return self::FAILURE;
                 }
 
-                $browser->waitFor('input[name="answer"]')->pause(100)
-                    ->type('answer', config('app.credentials.apm.answer'))
+                $browser
+                    ->waitFor('.select-factor')
+                    ->press('.authenticator-button[data-se="security_question"] .select-factor');
+
+                $browser->waitFor('input[name="credentials.answer"]')->pause(100)
+                    ->type('credentials.answer', config('app.credentials.apm.answer'))
                     ->press('Verify')
                     ->waitForText('Last connection date', 15);
 
