@@ -21,12 +21,19 @@ class RetrieveIcsRosterCommand extends Command
 
             $this->browse(function ($browser) {
                 // Connect to APM.
-                $browser->visit('https://planning.to.aero/SAML/SingleSignOn')
+                $browser
+                    ->visit('https://planning.to.aero/SAML/SingleSignOn')
                     ->waitFor('input[name="identifier"]')
-                    ->type('identifier', config('app.credentials.apm.username'))
+                    ->type('identifier', config('app.credentials.apm.username'));
+
+                if (! $browser->pause(100)->element('input[name="credentials.passcode"]')) {
+                    $browser->click('input[type="submit"]');
+                }
+
+                $browser
                     ->waitFor('input[name="credentials.passcode"]')->pause(100)
                     ->type('credentials.passcode', config('app.credentials.apm.password'))
-                    ->press('Sign in');
+                    ->click('input[type="submit"]');
 
                 if ($errorElement = $browser->pause(1000)->element('.okta-form-infobox-error')) {
                     Log::error($errorElement->getText());
@@ -39,7 +46,7 @@ class RetrieveIcsRosterCommand extends Command
 
                 $browser->waitFor('input[name="credentials.answer"]')->pause(100)
                     ->type('credentials.answer', config('app.credentials.apm.answer'))
-                    ->press('Verify')
+                    ->click('input[type="submit"]')
                     ->waitForText('Last connection date', 15);
 
                 // Trigger ICS download.
