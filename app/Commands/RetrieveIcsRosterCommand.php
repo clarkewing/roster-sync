@@ -3,6 +3,7 @@
 namespace App\Commands;
 
 use Exception;
+use Facebook\WebDriver\Exception\TimeoutException;
 use Illuminate\Support\Facades\Log;
 use LaravelZero\Framework\Commands\Command;
 use Illuminate\Support\Facades\File;
@@ -40,9 +41,12 @@ class RetrieveIcsRosterCommand extends Command
                     return self::FAILURE;
                 }
 
-                $browser
-                    ->waitFor('.select-factor')
-                    ->press('.authenticator-button[data-se="security_question"] .select-factor');
+                // Select security question as second factor only if choices are provided.
+                try {
+                    $browser
+                        ->waitFor('.select-factor')
+                        ->press('.authenticator-button[data-se="security_question"] .select-factor');
+                } catch (TimeoutException) {}
 
                 $browser->waitFor('input[name="credentials.answer"]')->pause(100)
                     ->type('credentials.answer', config('app.credentials.apm.answer'))
