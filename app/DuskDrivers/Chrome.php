@@ -18,10 +18,7 @@ class Chrome extends ConsoleDuskChrome
                     config('laravel-console-dusk.driver.chrome.options', []),
                     [$this->runHeadless()]
                 ))
-            )
-            ->setExperimentalOption('mobileEmulation', [
-                'userAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
-            ]);
+            );
 
         $driver = RemoteWebDriver::create(
             $_ENV['DUSK_DRIVER_URL'] ?? 'http://localhost:9515',
