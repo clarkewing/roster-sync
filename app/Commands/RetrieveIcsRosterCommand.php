@@ -25,7 +25,7 @@ class RetrieveIcsRosterCommand extends Command
                 $browser
                     ->visit('https://planning.to.aero/SAML/SingleSignOn');
 
-                if ($errorCode = $browser->pause(100)->element('.illustration.error-code')) {
+                if ($errorCode = $browser->pause(100)->element('.illustration .error-code')) {
                     Log::error("Unable to retrieve roster. Error code {$errorCode->getText()} thrown.");
                     return self::FAILURE;
                 }
