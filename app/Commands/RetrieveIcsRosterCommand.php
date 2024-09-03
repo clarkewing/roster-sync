@@ -23,7 +23,14 @@ class RetrieveIcsRosterCommand extends Command
             $this->browse(function ($browser) {
                 // Connect to APM.
                 $browser
-                    ->visit('https://planning.to.aero/SAML/SingleSignOn')
+                    ->visit('https://planning.to.aero/SAML/SingleSignOn');
+
+                if ($errorCode = $browser->pause(100)->element('.illustration.error-code')) {
+                    Log::error("Unable to retrieve roster. Error code {$errorCode->getText()} thrown.");
+                    return self::FAILURE;
+                }
+
+                $browser
                     ->waitFor('input[name="identifier"]')
                     ->type('identifier', config('app.credentials.apm.username'));
 
